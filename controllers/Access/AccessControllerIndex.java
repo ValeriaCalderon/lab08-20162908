@@ -21,14 +21,14 @@ import model.entity.*;
 @SuppressWarnings("serial")
 
 
-public class AccessControllerIndex extends HttpServlet {
+public class AccessControllerIndex extends HttpServlet { 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		com.google.appengine.api.users.User cuentaGoogle = UserServiceFactory.getUserService().getCurrentUser();
-		if(cuentaGoogle == null){
+		if(cuentaGoogle == null){ //no esta logeado
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/Views/Errors/deny1.jsp");
 			dispatcher.forward(req, resp);
 		}
-		else{
+		else{  // lista de usuarios esta vacia
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			String query = "select from " + model.entity.User.class.getName() + " where email=='" + cuentaGoogle.getEmail() + "'" + "&& status==true";
 			List<model.entity.User> uSearch = (List<model.entity.User>) pm.newQuery(query).execute();
@@ -36,7 +36,7 @@ public class AccessControllerIndex extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/Views/Errors/deny2.jsp");
 				dispatcher.forward(req, resp);
 			}
-			else{
+			else{   // recursos estan vacios
 				System.out.println(req.getServletPath());
 				String query2 = "select from " + Resources.class.getName() + " where url=='" + req.getServletPath() + "'" + " && status==true";
 				List<Resources> rSearch = (List<Resources>) pm.newQuery(query2).execute();
