@@ -64,10 +64,12 @@ public class UsersControllerEdit extends HttpServlet {
 		User users = pm.getObjectById(User.class, Long.parseLong(requi.getParameter("id")));
 		boolean status = Boolean.parseBoolean(requi.getParameter("estado"));
 		boolean gender = Boolean.parseBoolean(requi.getParameter("gender"));
+		Long miId= Long.parseLong(requi.getParameter("role"));
 		users.setEmail(requi.getParameter("email"));
 		users.setBirt(requi.getParameter("date"));
 		users.setStatus(status);
 		users.setGender(gender);
+		user.setIdRol(miId);
 		pm.close();
 		resp.sendRedirect("/users/view?id="+requi.getParameter("id"));
 	}
